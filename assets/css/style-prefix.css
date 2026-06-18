@@ -847,15 +847,6 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
      object-position: right;
 }
 
-.slider-item.logo-hero .banner-img {
-  -o-object-position: center;
-     object-position: center;
-}
-
-.slider-item.logo-hero .banner-content {
-  z-index: 1;
-}
-
 .banner-content {
   background: hsla(0, 0%, 100%, 0.8);
   position: absolute;
