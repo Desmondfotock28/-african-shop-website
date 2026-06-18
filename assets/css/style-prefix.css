@@ -535,6 +535,14 @@ body::-webkit-scrollbar-thumb:hover { background: hsl(0, 0%, 70%); }
 
 .header-logo img { margin: auto; }
 
+.brand-logo {
+  color: var(--eerie-black);
+  font-size: var(--fs-2);
+  font-weight: var(--weight-700);
+  line-height: 1.2;
+  text-align: center;
+}
+
 .header-search-container { position: relative; }
 
 .header-search-container .search-field {
