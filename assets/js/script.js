@@ -1,59 +1,54 @@
 'use strict';
 
-// mobile menu variables
-const mobileMenuOpenBtn = document.querySelectorAll('[data-mobile-menu-open-btn]');
-const mobileMenu = document.querySelectorAll('[data-mobile-menu]');
-const mobileMenuCloseBtn = document.querySelectorAll('[data-mobile-menu-close-btn]');
-const overlay = document.querySelector('[data-overlay]');
+const menuToggle = document.querySelector('.menu-toggle');
+const primaryNav = document.querySelector('#site-menu');
+const heroSlides = document.querySelectorAll('.hero-slide');
+const heroDots = document.querySelectorAll('.hero-dot');
+let activeHeroSlide = 0;
+let heroTimer;
 
-for (let i = 0; i < mobileMenuOpenBtn.length; i++) {
-
-  // mobile menu function
-  const mobileMenuCloseFunc = function () {
-    mobileMenu[i].classList.remove('active');
-    overlay.classList.remove('active');
-  }
-
-  mobileMenuOpenBtn[i].addEventListener('click', function () {
-    mobileMenu[i].classList.add('active');
-    overlay.classList.add('active');
+if (menuToggle && primaryNav) {
+  menuToggle.addEventListener('click', () => {
+    const isOpen = primaryNav.classList.toggle('is-open');
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('menu-open', isOpen);
   });
 
-  mobileMenuCloseBtn[i].addEventListener('click', mobileMenuCloseFunc);
-  overlay.addEventListener('click', mobileMenuCloseFunc);
-
+  primaryNav.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      primaryNav.classList.remove('is-open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    }
+  });
 }
 
+if (heroSlides.length && heroDots.length) {
+  const showHeroSlide = (index) => {
+    activeHeroSlide = index;
 
+    heroSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === activeHeroSlide);
+    });
 
+    heroDots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('is-active', dotIndex === activeHeroSlide);
+    });
+  };
 
+  const startHeroTimer = () => {
+    clearInterval(heroTimer);
+    heroTimer = setInterval(() => {
+      showHeroSlide((activeHeroSlide + 1) % heroSlides.length);
+    }, 5000);
+  };
 
-// accordion variables
-const accordionBtn = document.querySelectorAll('[data-accordion-btn]');
-const accordion = document.querySelectorAll('[data-accordion]');
-
-for (let i = 0; i < accordionBtn.length; i++) {
-
-  accordionBtn[i].addEventListener('click', function () {
-
-    const clickedBtn = this.nextElementSibling.classList.contains('active');
-
-    for (let i = 0; i < accordion.length; i++) {
-
-      if (clickedBtn) break;
-
-      if (accordion[i].classList.contains('active')) {
-
-        accordion[i].classList.remove('active');
-        accordionBtn[i].classList.remove('active');
-
-      }
-
-    }
-
-    this.nextElementSibling.classList.toggle('active');
-    this.classList.toggle('active');
-
+  heroDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      showHeroSlide(index);
+      startHeroTimer();
+    });
   });
 
+  startHeroTimer();
 }
