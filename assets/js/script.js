@@ -4,6 +4,9 @@ const menuToggle = document.querySelector('.menu-toggle');
 const primaryNav = document.querySelector('#site-menu');
 const heroSlides = document.querySelectorAll('.hero-slide');
 const heroDots = document.querySelectorAll('.hero-dot');
+const siteSearch = document.querySelector('.site-search');
+const siteSearchInput = document.querySelector('.site-search input');
+const searchableCards = document.querySelectorAll('.main-body-card');
 let activeHeroSlide = 0;
 let heroTimer;
 
@@ -51,4 +54,23 @@ if (heroSlides.length && heroDots.length) {
   });
 
   startHeroTimer();
+}
+
+if (siteSearch && siteSearchInput && searchableCards.length) {
+  const filterCards = () => {
+    const query = siteSearchInput.value.trim().toLowerCase();
+
+    searchableCards.forEach((card) => {
+      const text = card.textContent.toLowerCase();
+      card.hidden = query !== '' && !text.includes(query);
+    });
+  };
+
+  siteSearch.addEventListener('submit', (event) => {
+    event.preventDefault();
+    filterCards();
+    document.querySelector('#portfolios')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  siteSearchInput.addEventListener('input', filterCards);
 }
